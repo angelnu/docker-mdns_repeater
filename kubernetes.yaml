@@ -1,0 +1,27 @@
+---
+# ------------------- DaemonSet ------------------- #
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: mdns-repeater
+  labels:
+    app: mdns-repeater
+spec:
+  selector:
+    matchLabels:
+      app: mdns-repeater
+  template:
+    metadata:
+      labels:
+        app: mdns-repeater
+    spec:
+      hostNetwork: true
+      containers:
+      - name: mdns-repeater
+        image: angelnu/mdns-repeater-arm
+        env:
+        - name: hostNIC
+          value: eth0
+        - name: dockerNIC
+          value: weave
