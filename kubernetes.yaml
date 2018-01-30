@@ -1,13 +1,16 @@
 ---
-# ------------------- DaemonSet ------------------- #
+# ------------------- Deployment ------------------- #
 
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: mdns-repeater
   labels:
     app: mdns-repeater
 spec:
+  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: mdns-repeater
@@ -19,9 +22,16 @@ spec:
       hostNetwork: true
       containers:
       - name: mdns-repeater
-        image: angelnu/mdns-repeater-arm
+        image: angelnu/mdns-repeater-arm:latest
         env:
-        - name: hostNIC
-          value: eth0
+        # - name: hostNIC
+        #   value: eth0
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         - name: dockerNIC
           value: weave
+        # Verbose mode
+        # - name: options
+        #   value: -v

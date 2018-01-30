@@ -55,7 +55,9 @@ struct if_sock socks[5];
 #define PACKET_SIZE 65536
 void *pkt_data = NULL;
 
-int foreground = 0;
+typedef enum { false, true } bool;
+bool foreground = false;
+bool verbose = false;
 int shutdown_flag = 0;
 
 char *pid_file = PIDFILE;
@@ -298,7 +300,8 @@ static void show_help(const char *progname) {
 					"maximum number of interfaces is 5\n"
 					"\n"
 					" flags:\n"
-					"	-f	runs in foreground for debugging\n"
+					"	-f	runs in foreground and prints logs to stdout\n"
+          "	-v	verbose mode. Trace messages (very verbose!)\n"
 					"	-p	specifies the pid file path (default: " PIDFILE ")\n"
 					"	-h	shows this help\n"
 					"\n"
@@ -311,7 +314,8 @@ static int parse_opts(int argc, char *argv[]) {
 	while ((c = getopt(argc, argv, "hfp:")) != -1) {
 		switch (c) {
 			case 'h': help = 1; break;
-			case 'f': foreground = 1; break;
+			case 'f': foreground = true; break;
+      case 'v': verbose = true; break;
 			case 'p':
 				if (optarg[0] != '/')
 					log_message(LOG_ERR, "pid file path must be absolute");
@@ -425,7 +429,7 @@ int main(int argc, char *argv[]) {
 			if (self_generated_packet)
 				continue;
 
-			if (foreground)
+			if (verbose)
 				printf("data from=%s size=%ld\n", inet_ntoa(fromaddr.sin_addr), recvsize);
 
 			for (j = 0; j < num_socks; j++) {
@@ -433,7 +437,7 @@ int main(int argc, char *argv[]) {
 				if ((fromaddr.sin_addr.s_addr & socks[j].mask.s_addr) == socks[j].net.s_addr)
 					continue;
 
-				if (foreground)
+				if (verbose)
 					printf("repeating data to %s\n", socks[j].ifname);
 
 				// repeat data
