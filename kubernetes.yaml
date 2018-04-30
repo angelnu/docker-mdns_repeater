@@ -20,6 +20,8 @@ spec:
         app: mdns-repeater
     spec:
       hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/arch: arm
       containers:
       - name: mdns-repeater
         image: angelnu/mdns-repeater-arm:latest
