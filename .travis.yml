@@ -1,0 +1,23 @@
+sudo: required
+
+services:
+ - docker
+
+language: bash
+
+env:
+  matrix:
+  - DOCKER_ARCH=amd64
+  - DOCKER_ARCH=arm64
+  - DOCKER_ARCH=arm
+
+script:
+- ./build/travis_build.sh
+
+jobs:
+  include:
+
+  - stage: Manifest
+    script:
+    - ./build/travis_manifest.sh
+    env:
