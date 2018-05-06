@@ -22,7 +22,7 @@ spec:
       hostNetwork: true
       containers:
       - name: mdns-repeater
-        image: angelnu/mdns-repeater:latest
+        image: angelnu/mdns_repeater:latest
         env:
         # - name: hostNIC
         #   value: eth0
