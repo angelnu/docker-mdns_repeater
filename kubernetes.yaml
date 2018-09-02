@@ -9,6 +9,7 @@ metadata:
     app: mdns-repeater
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
   strategy:
     type: Recreate
   selector:
@@ -23,6 +24,14 @@ spec:
       containers:
       - name: mdns-repeater
         image: angelnu/mdns_repeater:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "2Mi"
+            cpu: "5m"
+          limits:
+            #memory: "128Mi"
+            #cpu: "500m"
         env:
         # - name: hostNIC
         #   value: eth0
