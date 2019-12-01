@@ -12,12 +12,12 @@ env:
   - DOCKER_ARCH=arm
 
 script:
-- ./build/travis_build.sh
+- ./build/cicd_build.sh
 
 jobs:
   include:
 
   - stage: Manifest
     script:
-    - ./build/travis_manifest.sh
+    - ./build/cicd_manifest.sh
     env:
