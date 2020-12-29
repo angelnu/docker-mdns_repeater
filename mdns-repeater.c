@@ -311,11 +311,11 @@ static void show_help(const char *progname) {
 static int parse_opts(int argc, char *argv[]) {
 	int c;
 	int help = 0;
-	while ((c = getopt(argc, argv, "hfp:")) != -1) {
+	while ((c = getopt(argc, argv, "hfvp:")) != -1) {
 		switch (c) {
 			case 'h': help = 1; break;
 			case 'f': foreground = true; break;
-      case 'v': verbose = true; break;
+                        case 'v': verbose = true; break;
 			case 'p':
 				if (optarg[0] != '/')
 					log_message(LOG_ERR, "pid file path must be absolute");
